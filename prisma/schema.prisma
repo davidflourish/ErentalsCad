@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String?
+  password        String?
+  role            Role      @default(GUEST) // GUEST, OWNER, ADMIN
+  favorites       Property[]
+  bookings        Booking[]
+  reviews         Review[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([email])
+}
+
+enum Role {
+  GUEST
+  OWNER
+  ADMIN
+}
+
+// Property model for apartment listings
+model Property {
+  id                    String     @id @default(cuid())
+  title                 String
+  description           String     @db.Text
+  arrondissement        Int        // 1-20
+  address               String
+  registrationNumber    String     @unique // Required for compliance - e.g., 75PAR9876543210
+  dpeRating             DPERating  // A, B, C, D, E only
+  primaryResidence      Boolean    @default(false) // 90-day cap if true
+  maxNightsPrimary      Int        @default(90)
+  pricePerNight         Float
+  bedrooms              Int
+  bathrooms             Int
+  maxGuests             Int
+  amenities             String[]   // AC, balcony, washer/dryer, pet-friendly, etc.
+  hasElevator           Boolean    @default(false)
+  hasBalcony            Boolean    @default(false)
+  hasAC                 Boolean    @default(false)
+  hasWasherDryer        Boolean    @default(false)
+  petFriendly           Boolean    @default(false)
+  hasEiffelView         Boolean    @default(false)
+  images                String[]   // URLs to property images
+  virtualTourUrl        String?
+  floorPlanUrl          String?
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  bookings              Booking[]
+  reviews               Review[]
+  favorites             User[]
+
+  @@index([arrondissement])
+  @@index([dpeRating])
+  @@index([pricePerNight])
+  @@fulltext([title, description])
+}
+
+enum DPErating {
+  A
+  B
+  C
+  D
+  E
+}
+
+// Booking model
+model Booking {
+  id              String      @id @default(cuid())
+  propertyId      String
+  property        Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checkInDate     DateTime
+  checkOutDate    DateTime
+  numberOfNights  Int
+  guestCount      Int
+  totalPrice      Float
+  depositPrice    Float?
+  status          BookingStatus @default(PENDING) // PENDING, CONFIRMED, CANCELLED, COMPLETED
+  stripePaymentId String?
+  notes           String?     @db.Text
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([propertyId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+// Review model
+model Review {
+  id          String    @id @default(cuid())
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating      Int       // 1-5
+  title       String
+  content     String    @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([propertyId])
+  @@index([userId])
+}
+
+// Notification/Event log for audit trail
+model Notification {
+  id          String    @id @default(cuid())
+  eventType   String    // NEW_BOOKING, PAYMENT_SUCCESS, CANCELLATION, etc.
+  propertyId  String?
+  userId      String?
+  bookingId   String?
+  message     String    @db.Text
+  emailSent   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  @@index([eventType])
+  @@index([createdAt])
+}

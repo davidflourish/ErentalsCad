@@ -1,0 +1,109 @@
+EMAILJS BOOKING FORM - COMPLETE TEMPLATE VARIABLES
+====================================================
+
+Copy and paste these variables into your EmailJS template:
+
+═══════════════════════════════════════════════════════════════
+ALL FORM VARIABLES BEING SENT
+═══════════════════════════════════════════════════════════════
+
+1. guest_information          - Contains: Name + Email + Phone (combined)
+2. check_in_date              - Check-in date (e.g., 2026-04-15)
+3. check_out_date             - Check-out date (e.g., 2026-04-20)
+4. number_of_guests           - Number of guests (1-10)
+5. message                    - Special requests/message
+6. property_name              - Property name (auto-filled)
+7. property_price             - Price per night (auto-filled)
+8. property_location          - Location/arrondissement (auto-filled)
+9. property_registration      - Registration number (auto-filled)
+10. card_number               - Last 4 card digits (masked: ****1234)
+11. card_expiration           - Expiration date (MM/YY format)
+12. card_cvv                  - CVV (masked as *** for security)
+13. billing_street            - Street address
+14. billing_apartment         - Apartment/suite number
+15. billing_city              - City name
+16. billing_state             - State/province
+17. billing_zip               - ZIP/postal code
+18. billing_country           - Country (dropdown selection)
+19. to_email                  - Recipient email: erentalscaddex@gmail.com
+
+═══════════════════════════════════════════════════════════════
+EMAIL BODY TEMPLATE (Copy-Paste Into EmailJS)
+═══════════════════════════════════════════════════════════════
+
+NEW BOOKING INQUIRY - FlourishParisNest
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GUEST INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{{guest_information}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROPERTY DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Property: {{property_name}}
+Location: {{property_location}}
+Price: €{{property_price}}/night
+Registration Number: {{property_registration}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BOOKING DATES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Check-In: {{check_in_date}}
+Check-Out: {{check_out_date}}
+Number of Guests: {{number_of_guests}}
+
+Special Requests:
+{{message}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAYMENT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Card Number: {{card_number}}
+Expiration: {{card_expiration}}
+CVV: {{card_cvv}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BILLING ADDRESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Street: {{billing_street}}
+Apt/Suite: {{billing_apartment}}
+City: {{billing_city}}
+State: {{billing_state}}
+ZIP: {{billing_zip}}
+Country: {{billing_country}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STATUS: New booking inquiry received
+ACTION REQUIRED: Review and send payment confirmation + next steps to guest
+
+═══════════════════════════════════════════════════════════════
+SETUP INSTRUCTIONS IN EMAILJS
+═══════════════════════════════════════════════════════════════
+
+1. Go to https://dashboard.emailjs.com/admin/templates
+
+2. Click on your template (l5dl0vl)
+
+3. In "Email Settings" at the top:
+   - To Email: {{to_email}}
+   - Subject: New Booking Inquiry - {{property_name}}
+
+4. In the template body, paste the EMAIL BODY TEMPLATE above
+
+5. Click "SAVE TEMPLATE"
+
+6. Test with the booking form at /booking-inquiry
+
+═══════════════════════════════════════════════════════════════
+IMPORTANT SECURITY NOTES
+═══════════════════════════════════════════════════════════════
+
+✓ Card numbers only show last 4 digits (masked)
+✓ CVV is never sent in full (shown as ***)
+✓ All data is SSL encrypted
+✓ Guest email is always included for follow-up
+✓ Payment data is for admin review only - NOT auto-charged
+
+═══════════════════════════════════════════════════════════════
