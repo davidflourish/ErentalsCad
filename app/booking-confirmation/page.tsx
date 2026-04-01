@@ -1,29 +1,36 @@
-import { Suspense } from 'react';
+'use client'
+
+import React, { useEffect, useState, Suspense } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { CheckCircle, Clock, Mail, Shield, Phone, Award } from 'lucide-react'
+import Link from 'next/link'
 
 function BookingConfirmationContent() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
-  const email = searchParams.get('email') || 'your email';
-  const [timeLeft, setTimeLeft] = useState('72 hours');
+  const email = searchParams.get('email') || 'your email'
+  const [timeLeft, setTimeLeft] = useState('72 hours')
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const futureDate = new Date();
-      futureDate.setHours(futureDate.getHours() + 72);
-      const now = new Date();
-      const diff = futureDate.getTime() - now.getTime();
+      const futureDate = new Date()
+      futureDate.setHours(futureDate.getHours() + 72)
+      const now = new Date()
+      const diff = futureDate.getTime() - now.getTime()
 
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
 
       if (hours > 0) {
-        setTimeLeft(`${hours}h ${minutes}m`);
+        setTimeLeft(`${hours}h ${minutes}m`)
+      } else {
+        setTimeLeft('Less than 1 hour')
       }
-    }, 60000);
+    }, 60000)
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => clearInterval(timer)
+  }, [])
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-50 to-blue-50 py-12 px-4">
@@ -60,7 +67,6 @@ function BookingConfirmationContent() {
           </div>
 
           <div className="space-y-6">
-            {/* Step 1 */}
             <div className="flex gap-4">
               <div className="flex flex-col items-center">
                 <div className="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">✓</div>
@@ -72,7 +78,6 @@ function BookingConfirmationContent() {
               </div>
             </div>
 
-            {/* Step 2 */}
             <div className="flex gap-4">
               <div className="flex flex-col items-center">
                 <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">2</div>
@@ -86,7 +91,6 @@ function BookingConfirmationContent() {
               </div>
             </div>
 
-            {/* Step 3 */}
             <div className="flex gap-4">
               <div className="flex flex-col items-center">
                 <div className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold">3</div>
@@ -100,7 +104,6 @@ function BookingConfirmationContent() {
               </div>
             </div>
 
-            {/* Step 4 */}
             <div className="flex gap-4">
               <div className="flex flex-col items-center">
                 <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold">4</div>
@@ -114,7 +117,6 @@ function BookingConfirmationContent() {
             </div>
           </div>
 
-          {/* Timeline Indicator */}
           <div className="mt-8 bg-orange-50 border border-orange-200 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
               <Clock size={18} className="text-orange-600" />
@@ -257,7 +259,6 @@ function BookingConfirmationContent() {
           </div>
         </div>
 
-        {/* Footer Message */}
         <div className="text-center mt-12 text-slate-600">
           <p className="text-sm">
             Confirmation ID: #{Math.random().toString(36).substr(2, 9).toUpperCase()}
@@ -268,7 +269,7 @@ function BookingConfirmationContent() {
         </div>
       </div>
     </main>
-  );
+  )
 }
 
 export default function BookingConfirmationPage() {
@@ -283,5 +284,5 @@ export default function BookingConfirmationPage() {
     }>
       <BookingConfirmationContent />
     </Suspense>
-  );
+  )
 }
