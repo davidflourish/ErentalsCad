@@ -1,33 +1,29 @@
-'use client'
+import { Suspense } from 'react';
 
-import React, { useEffect, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { CheckCircle, Clock, Mail, Shield, Phone, MapPin, Award } from 'lucide-react'
-import Link from 'next/link'
+function BookingConfirmationContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-export default function BookingConfirmationPage() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const email = searchParams.get('email') || 'your email'
-  const [timeLeft, setTimeLeft] = useState('72 hours')
+  const email = searchParams.get('email') || 'your email';
+  const [timeLeft, setTimeLeft] = useState('72 hours');
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const futureDate = new Date()
-      futureDate.setHours(futureDate.getHours() + 72)
-      const now = new Date()
-      const diff = futureDate.getTime() - now.getTime()
-      
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-      
-      if (hours > 0) {
-        setTimeLeft(`${hours}h ${minutes}m`)
-      }
-    }, 60000)
+      const futureDate = new Date();
+      futureDate.setHours(futureDate.getHours() + 72);
+      const now = new Date();
+      const diff = futureDate.getTime() - now.getTime();
 
-    return () => clearInterval(timer)
-  }, [])
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+      if (hours > 0) {
+        setTimeLeft(`${hours}h ${minutes}m`);
+      }
+    }, 60000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-50 to-blue-50 py-12 px-4">
@@ -50,7 +46,10 @@ export default function BookingConfirmationPage() {
             <Mail className="text-blue-600" size={24} />
             <h2 className="text-xl font-semibold text-slate-900">Confirmation Sent</h2>
           </div>
-          <p className="text-slate-700">We've sent a confirmation email with all your reservation details. Check your inbox and spam folder.</p>
+          <p className="text-slate-700">
+            We've sent a confirmation email with all your reservation details.
+            Check your inbox and spam folder.
+          </p>
         </div>
 
         {/* Next Steps Timeline */}
@@ -81,7 +80,9 @@ export default function BookingConfirmationPage() {
               </div>
               <div className="pt-1">
                 <h3 className="font-semibold text-slate-900 text-lg">Admin Review & Confirmation</h3>
-                <p className="text-slate-600 mt-1">Our admin team will review your reservation and verify all details within <strong>24-48 hours</strong>.</p>
+                <p className="text-slate-600 mt-1">
+                  Our admin team will review your reservation and verify all details within <strong>24-48 hours</strong>.
+                </p>
               </div>
             </div>
 
@@ -93,7 +94,9 @@ export default function BookingConfirmationPage() {
               </div>
               <div className="pt-1">
                 <h3 className="font-semibold text-slate-900 text-lg">Next Steps Email</h3>
-                <p className="text-slate-600 mt-1">We'll send you complete check-in instructions, property details, and access codes via email.</p>
+                <p className="text-slate-600 mt-1">
+                  We'll send you complete check-in instructions, property details, and access codes via email.
+                </p>
               </div>
             </div>
 
@@ -104,7 +107,9 @@ export default function BookingConfirmationPage() {
               </div>
               <div className="pt-1">
                 <h3 className="font-semibold text-slate-900 text-lg">Enjoy Your Stay</h3>
-                <p className="text-slate-600 mt-1">Check in on your arrival date and enjoy your luxury Parisian apartment!</p>
+                <p className="text-slate-600 mt-1">
+                  Check in on your arrival date and enjoy your luxury Parisian apartment!
+                </p>
               </div>
             </div>
           </div>
@@ -113,15 +118,18 @@ export default function BookingConfirmationPage() {
           <div className="mt-8 bg-orange-50 border border-orange-200 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
               <Clock size={18} className="text-orange-600" />
-              <p className="font-semibold text-orange-900">Maximum Response Time: <span className="text-lg">72 hours</span></p>
+              <p className="font-semibold text-orange-900">
+                Maximum Response Time: <span className="text-lg">72 hours</span>
+              </p>
             </div>
-            <p className="text-sm text-orange-800">We typically respond within 24-48 hours. You'll receive a detailed email with all next steps.</p>
+            <p className="text-sm text-orange-800">
+              We typically respond within 24-48 hours. You'll receive a detailed email with all next steps.
+            </p>
           </div>
         </div>
 
         {/* Trust & Security Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Security Guarantee */}
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-600">
             <div className="flex items-center gap-3 mb-4">
               <Shield className="text-green-600" size={24} />
@@ -143,7 +151,6 @@ export default function BookingConfirmationPage() {
             </ul>
           </div>
 
-          {/* Support Available */}
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-600">
             <div className="flex items-center gap-3 mb-4">
               <Phone className="text-blue-600" size={24} />
@@ -252,12 +259,29 @@ export default function BookingConfirmationPage() {
 
         {/* Footer Message */}
         <div className="text-center mt-12 text-slate-600">
-          <p className="text-sm">Confirmation ID: #{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+          <p className="text-sm">
+            Confirmation ID: #{Math.random().toString(36).substr(2, 9).toUpperCase()}
+          </p>
           <p className="text-xs mt-2">
             A detailed confirmation email will be sent to you within the next 72 hours
           </p>
         </div>
       </div>
     </main>
-  )
+  );
+}
+
+export default function BookingConfirmationPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-green-50 to-blue-50">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading your booking confirmation...</p>
+        </div>
+      </div>
+    }>
+      <BookingConfirmationContent />
+    </Suspense>
+  );
 }
