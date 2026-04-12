@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, Phone, Calendar, Users, MessageSquare, CheckCircle2, AlertCircle } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 
-// ←←← ADD THIS LINE (this fixes the build error)
 export const dynamic = 'force-dynamic'
 
 const DEFAULT_PROPERTY_DETAILS = {
@@ -15,7 +14,7 @@ const DEFAULT_PROPERTY_DETAILS = {
   property_registration: '75005PAR2024004',
 }
 
-const COUNTRY_CODES = [ 
+const COUNTRY_CODES = [
   { code: '+1', country: 'United States' },
   { code: '+44', country: 'United Kingdom' },
   { code: '+33', country: 'France' },
@@ -36,10 +35,9 @@ const COUNTRY_CODES = [
   { code: '+86', country: 'China' },
   { code: '+91', country: 'India' },
   { code: '+55', country: 'Brazil' },
+]
 
- ]
-
-export default function BookingConfirmationPage() {
+export default function BookingInquiryPage() {   // ← Changed to BookingInquiryPage
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -62,38 +60,32 @@ export default function BookingConfirmationPage() {
 
   const [propertyDetails] = useState(initialPropertyDetails)
 
-  const [formData, setFormData] = useState({ 
-    // Guest Information
+  const [formData, setFormData] = useState({
     from_name: '',
     from_email: '',
     from_country: '+33',
     from_phone: '',
-    // Booking Details
     check_in_date: '',
     check_out_date: '',
     number_of_guests: '2',
     message: '',
-    // Payment Information
     card_number: '',
     card_expiration: '',
     card_cvv: '',
-    // Billing Address
     billing_street: '',
     billing_apartment: '',
     billing_city: '',
     billing_state: '',
     billing_zip: '',
     billing_country: 'Nigeria',
-    // Anti-spam
     honeypot: '',
-   })
+  })
 
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
-  // EmailJS init (unchanged)
   useEffect(() => {
     const initEmailJS = async () => {
       if (typeof window !== 'undefined') {
@@ -104,7 +96,6 @@ export default function BookingConfirmationPage() {
     initEmailJS()
   }, [])
 
-  // validateForm, handleChange, handleBlur (unchanged - I kept them exactly as you had)
   const validateForm = () => {
     const errors: string[] = []
 
@@ -125,15 +116,11 @@ export default function BookingConfirmationPage() {
       errors.push('Number of guests must be between 1 and 10')
     }
 
-    // Payment validation
     if (!formData.card_number.trim()) errors.push('Card number is required')
     if (!/^\d{13,19}$/.test(formData.card_number.replace(/\s/g, ''))) errors.push('Card number must be 13-19 digits')
-    if (!formData.card_expiration.trim()) errors.push('Card expiration is required')
-    if (!/^\d{2}\/\d{2}$/.test(formData.card_expiration)) errors.push('Expiration must be MM/YY format')
-    if (!formData.card_cvv.trim()) errors.push('CVV is required')
-    if (!/^\d{3,4}$/.test(formData.card_cvv)) errors.push('CVV must be 3-4 digits')
+    if (!formData.card_expiration.trim() || !/^\d{2}\/\d{2}$/.test(formData.card_expiration)) errors.push('Expiration must be MM/YY format')
+    if (!formData.card_cvv.trim() || !/^\d{3,4}$/.test(formData.card_cvv)) errors.push('CVV must be 3-4 digits')
 
-    // Billing address validation
     if (!formData.billing_street.trim()) errors.push('Street address is required')
     if (!formData.billing_city.trim()) errors.push('City is required')
     if (!formData.billing_state.trim()) errors.push('State is required')
@@ -200,7 +187,6 @@ export default function BookingConfirmationPage() {
         emailParams
       )
 
-      // ←←← CHANGED: No more redirect → just show the thank-you screen
       setSubmitted(true)
     } catch (err: any) {
       console.error(err)
@@ -210,7 +196,6 @@ export default function BookingConfirmationPage() {
     }
   }
 
-  // Rest of your component (submitted UI + form UI) stays exactly the same
   if (submitted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-20 px-4">
@@ -280,14 +265,12 @@ export default function BookingConfirmationPage() {
           </div>
         </div>
       </div>
-    
-     )
+    )
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-20 px-4">
       <div className="max-w-3xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-serif text-slate-900 mb-4">
             Reserve Your Parisian Dream
@@ -319,7 +302,7 @@ export default function BookingConfirmationPage() {
           </div>
         </div>
 
-        {/* Form */}
+        {/* Form - the rest is the same as you had */}
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-10 border border-slate-200">
           {error && (
             <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
@@ -328,7 +311,6 @@ export default function BookingConfirmationPage() {
             </div>
           )}
 
-          {/* Honeypot - invisible anti-spam field */}
           <input
             type="text"
             name="honeypot"
@@ -339,7 +321,8 @@ export default function BookingConfirmationPage() {
             autoComplete="off"
           />
 
-          {/* Full Name */}
+          {/* All your form fields (Full Name, Email, Phone, Dates, Guests, Message, Payment, etc.) */}
+          {/* ... paste the rest of your form JSX here if you want, but it's the same as before ... */}
           <div className="mb-8">
             <label className="block text-sm font-semibold text-slate-900 mb-3">
               Full Name <span className="text-red-500">*</span>
@@ -693,8 +676,6 @@ export default function BookingConfirmationPage() {
               <p className="text-sm text-blue-900"><strong>Confirmation:</strong> Receipt and invoice sent to your email</p>
             </div>
           </div>
-
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -709,5 +690,5 @@ export default function BookingConfirmationPage() {
         </form>
       </div>
     </div>
-   )
+  )
 }
